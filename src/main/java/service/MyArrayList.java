@@ -1,6 +1,7 @@
 package service;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Реализация динамического массива, аналогичная {@link java.util.ArrayList}.
@@ -780,13 +781,101 @@ public class MyArrayList<E> implements List<E> {
     }
 
     //Concurrent method(task 4)
-    //TODO:
-    public <E> int countOccurrences(E element){
-        return 0;
+    /**
+     * Подсчитывает количество вхождений указанного элемента в коллекцию
+     * с использованием параллельного стрима.
+     * <p>
+     * Метод создает "снэпшот" текущего состояния {@code MyArrayList}, чтобы
+     * избежать проблем при параллельном доступе, и затем применяет
+     * {@link java.util.stream.Stream#parallel()} для параллельной фильтрации
+     * элементов. Подсчёт выполняется автоматически средствами Stream API.
+     * </p>
+     *
+     * <p><b>Особенности:</b></p>
+     * <ul>
+     *   <li>Используется параллельный стрим, что позволяет задействовать
+     *       несколько потоков без явного управления пулом потоков.</li>
+     *   <li>Если коллекция пуста, метод возвращает {@code 0}.</li>
+     *   <li>Сравнение элементов выполняется через {@link java.util.Objects#equals(Object, Object)},
+     *       что корректно обрабатывает {@code null} значения.</li>
+     * </ul>
+     *
+     * @param element элемент, количество вхождений которого требуется подсчитать
+     * @return общее количество вхождений {@code element} в коллекцию
+     */
+    public int countParallelOccurrences(E element){
+        MyArrayList<E> snapshot = new MyArrayList<>(this);
+        return (int) snapshot.parallelStream()
+                .filter(e -> Objects.equals(e, element))
+                .count();
     }
 
-    //TODO:
-    public <E> int countOccurrences(E element, int threadAmount){
-        return 0;
+    /**
+     * Подсчитывает количество вхождений указанного элемента в коллекции
+     * с использованием многопоточности. Коллекция делится на части,
+     * каждая из которых обрабатывается отдельным потоком.
+     *
+     * <p>Метод создаёт пул потоков фиксированного размера, запускает задачи
+     * для подсчёта вхождений элемента в каждой части коллекции и агрегирует
+     * результаты. Если задачи не завершатся в течение 10 секунд, будет выброшено
+     * исключение {@link java.util.concurrent.CompletionException} с причиной {@link java.util.concurrent.TimeoutException}.
+     *
+     * @param element      элемент, количество вхождений которого нужно подсчитать
+     * @param threadAmount количество потоков, используемых для обработки.
+     *                     Должно быть положительным числом; если оно больше размера коллекции,
+     *                     будет ограничено этим размером.
+     *
+     * @return количество вхождений указанного элемента в коллекции
+     *
+     * @throws IllegalArgumentException если {@code threadAmount <= 0}
+     * @throws java.util.concurrent.CompletionException если выполнение задач прервано
+     *         или превышено время ожидания (10 секунд)
+     */
+    public int countOccurrences(E element, int threadAmount){
+        if (threadAmount<=0){
+            throw new IllegalArgumentException("Количество потоков не может быть отрицательным либо равным нулю!");
+        }
+
+        MyArrayList<E> snapshot = new MyArrayList<>(this);
+        int size = snapshot.size();
+        if (size == 0) return 0;
+        threadAmount = Math.min(threadAmount, size);
+        int chunkSize = (int) Math.ceil((double) size / threadAmount);
+
+        ExecutorService executor = Executors.newFixedThreadPool(threadAmount);
+        List<CompletableFuture<Integer>> futures = new ArrayList<>();
+        for (int i = 0; i < threadAmount; i++) {
+            int start = i * chunkSize;
+            int end = Math.min((i + 1) * chunkSize, size);
+            //для последнего потока
+            if (start >= end) break;
+
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+                int count = 0;
+                for (int j = start; j < end; j++) {
+                    if (Objects.equals(snapshot.get(j), element)) {
+                        count++;
+                    }
+                }
+                return count;
+            }, executor);
+
+            futures.add(future);
+        }
+
+        CompletableFuture<Integer> totalFuture = CompletableFuture.allOf(
+                futures.toArray(new CompletableFuture[0]/*массив того же типа, что и переданный аргумент*/)
+        )
+                .orTimeout(10, TimeUnit.SECONDS)
+                .thenApply(v -> futures.stream()
+                .mapToInt(CompletableFuture::join)
+                .sum()
+        );
+
+        try {
+            return totalFuture.join();
+        } finally {
+            executor.shutdown();
+        }
     }
 }
