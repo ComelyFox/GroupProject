@@ -1,4 +1,4 @@
-package service.fillCollection.fillStrategy;
+package service.fillCollection.fillStrategy.random.parts;
 
 import java.util.Random;
 public class RandomIntPartStrategy implements IRandomPart {
