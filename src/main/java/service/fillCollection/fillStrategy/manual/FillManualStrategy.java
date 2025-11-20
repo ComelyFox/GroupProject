@@ -22,7 +22,6 @@ public class FillManualStrategy implements IFillCollection {
     }
 
     private List<HashMap<String, Object>> fillCollectionManual() {
-        System.out.println("Заполняем коллекцию вручную");
         map.put("number", this.number);
         map.put("model", this.model);
         map.put("mileage", this.mileage);

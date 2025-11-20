@@ -38,7 +38,7 @@ public class FillFromFileStrategy implements IFillCollection {
                 String[] parts = line.split(",");
 
                 if (parts.length != 3) {
-                    System.out.println("Cтрока: " + lineCount + " не прочитана: количество полей != 3");
+                    System.out.println("Cтрока: " + lineCount + " количество полей != 3");
                     continue;
                 }
 
@@ -49,7 +49,7 @@ public class FillFromFileStrategy implements IFillCollection {
                 try {
                     mileageInt = Integer.parseInt(mileage);
                 }  catch (NumberFormatException e) {
-                    System.out.println("Строка: " + lineCount + " не прочитана: 3-е поле не является числом");
+                    System.out.println("Строка: " + lineCount + " 3-е поле не является числом");
                     continue;
                 }
 
