@@ -845,8 +845,8 @@ public class MyArrayList<E> implements List<E> {
         ExecutorService executor = Executors.newFixedThreadPool(threadAmount);
         List<CompletableFuture<Integer>> futures = new ArrayList<>();
         for (int i = 0; i < threadAmount; i++) {
-            int start = i * chunkSize;
-            int end = Math.min((i + 1) * chunkSize, size);
+            final int start = i * chunkSize;
+            final int end = Math.min((i + 1) * chunkSize, size);
             //для последнего потока
             if (start >= end) break;
 
