@@ -1,10 +1,9 @@
 package sorting;
 
-import base.Bus;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import base.Bus;
 
 public class BusQuickSorter {
     public void sort(List<Bus> buses) {
