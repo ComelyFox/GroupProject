@@ -93,7 +93,6 @@ public class Main {
 
         boolean isExit = false;
         int choice;
-        Scanner scanner = new Scanner(System.in);
 
         while (!isExit) {
             try {

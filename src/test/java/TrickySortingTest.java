@@ -44,7 +44,6 @@ public class TrickySortingTest {
         // Assert
         assertEquals(4, busesList.size());
 
-        //2341
         Bus expected1 = new Bus.BusBuilder()
                 .setModel("МАЗ")
                 .setSerialNumber(2)
@@ -67,9 +66,9 @@ public class TrickySortingTest {
         assertEquals(expected3, busesList.get(2));
 
         Bus expected4 = new Bus.BusBuilder()
-                .setModel("ГАЗ")
-                .setSerialNumber(4)
-                .setMileage(123)
+                .setModel("ЛиАЗ")
+                .setSerialNumber(1)
+                .setMileage(100)
                 .build();
         assertEquals(expected4, busesList.get(3));
     }
