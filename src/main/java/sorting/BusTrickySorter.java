@@ -9,12 +9,11 @@ import java.util.stream.IntStream;
 
 
 public class BusTrickySorter implements SortingStrategy {
-    private static final BusQuickSorter busQuickSorter = new BusQuickSorter();
-
     @Override
     public void sort(List<Bus> buses) {
         List<Bus> evenList = buses.stream()
                 .filter(x ->x.getSerialNumber()%2==0)
+                .sorted(Comparator.comparing(Bus::getSerialNumber))
                 .collect(Collectors.toList());
 
         Map<Integer, Bus> oddMap = IntStream.range(0, buses.size())
@@ -24,8 +23,6 @@ public class BusTrickySorter implements SortingStrategy {
                         i -> i,
                         buses::get
                 ));
-
-        busQuickSorter.sort(evenList);
 
         List<Bus> result = new ArrayList<>(buses.size());
         Iterator<Bus> evenIterator = evenList.iterator();
