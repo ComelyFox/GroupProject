@@ -20,9 +20,13 @@ public class BusQuickSorter {
     }
 
     private int partition(List<Bus> buses, int low, int high) {
-        // Выбор pivot, перемещение элементов
-        // Использование компаратора для сравнения
-        Bus pivot = buses.get(high);
+        // Выбор pivot как среднего элемента
+        int pivotIndex = low + (high - low) / 2;
+        Bus pivot = buses.get(pivotIndex);
+
+        //Перемещение pivot в конец для сохранения логики
+        Collections.swap(buses, pivotIndex, high);
+
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
@@ -31,7 +35,10 @@ public class BusQuickSorter {
                 Collections.swap(buses, i, j);
             }
         }
+
+        //Возвращение pivot на свою позицию
         Collections.swap(buses, i + 1, high);
+
         return i + 1;
     }
 
