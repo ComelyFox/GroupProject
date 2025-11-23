@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import base.Bus;
+import strategy.SortingStrategy;
 
-public class BusQuickSorter {
+public class BusQuickSorter implements SortingStrategy {
+    @Override
     public void sort(List<Bus> buses) {
         if (buses == null || buses.size() <= 1) return;
         quickSort(buses, 0, buses.size() - 1);
