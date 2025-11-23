@@ -1,5 +1,7 @@
 package base;
 
+import java.util.Objects;
+
 public class Bus {
     private String model;
     private int serialNumber;
@@ -30,6 +32,18 @@ public class Bus {
                 ", number=" + serialNumber +
                 ", mileage=" + mileage +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Bus bus = (Bus) o;
+        return serialNumber == bus.serialNumber && mileage == bus.mileage && Objects.equals(model, bus.model);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, serialNumber, mileage);
     }
 
     public static class BusBuilder {
