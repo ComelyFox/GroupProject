@@ -9,11 +9,11 @@ import java.util.List;
 public class FillManualStrategy implements IFillCollection {
     private final HashMap<String, Object> map;
     private final List<HashMap<String, Object>> collection;
-    private final String number;
     private final String model;
+    private final int number;
     private final int mileage;
 
-    public FillManualStrategy(String number, String model, int mileage) {
+    public FillManualStrategy(String model, int number, int mileage) {
         this.number = number;
         this.model = model;
         this.mileage = mileage;
@@ -22,8 +22,8 @@ public class FillManualStrategy implements IFillCollection {
     }
 
     private List<HashMap<String, Object>> fillCollectionManual() {
-        map.put("number", this.number);
         map.put("model", this.model);
+        map.put("number", this.number);
         map.put("mileage", this.mileage);
         collection.add(new HashMap<>(map));
         return collection;

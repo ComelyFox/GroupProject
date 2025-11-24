@@ -4,30 +4,22 @@ import service.fillCollection.fillStrategy.IFillCollection;
 import service.fillCollection.fillStrategy.random.parts.FillRandomCharPart;
 import service.fillCollection.fillStrategy.random.parts.FillRandomIntPart;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class FillRandomStrategy implements IFillCollection {
     int len;
+    List<String> listModels = List.of("Volvo", "Mercedes", "Scania", "Renault", "Kamaz", "DAF", "Man",
+            "Iveco", "Isuzu", "SITRAK", "Shacman", "JAC");
+
     public FillRandomStrategy(int len){
         this.len = len;
     }
 
-    private static String getRandomNumber() {
-        return String.valueOf(new FillRandomCharPart(1).random()
-                .append(new FillRandomIntPart(3).random())
-                .append(new FillRandomCharPart(2).random())
-                .append(new FillRandomIntPart(2).random()));
+    private String getRandomModel() {
+        return listModels.get(new Random().nextInt(listModels.size()));
     }
 
-    private static String getRandomModel() {
-        return String.valueOf(new FillRandomCharPart(2).random()
-                .append(new FillRandomIntPart(1).random()));
-    }
-
-    private static int getRandomMileage() {
+    private int getRandomInt() {
         Random rand = new Random();
         return rand.nextInt(1000000);
     }
@@ -36,9 +28,9 @@ public class FillRandomStrategy implements IFillCollection {
         List<HashMap<String, Object>> bus = new ArrayList<>();
         for (int i = 0; i < this.len; i++){
             HashMap<String, Object> entity = new HashMap<>();
-            entity.put("number", getRandomNumber());
             entity.put("model", getRandomModel());
-            entity.put("mileage", getRandomMileage());
+            entity.put("number", getRandomInt());
+            entity.put("mileage", getRandomInt());
             bus.add(entity);
         }
         return bus;

@@ -13,13 +13,11 @@ import java.util.List;
 
 public class FillFromFileStrategy implements IFillCollection {
     private final List<HashMap<String, Object>> list;
-    private final HashMap<String, Object> map;
     private final String filePath;
 
     public FillFromFileStrategy(String filePath) {
         this.filePath = filePath;
         this.list = new ArrayList<>();
-        this.map = new HashMap<>();
     }
 
     private List<HashMap<String, Object>> readFileToCollection() {
@@ -32,6 +30,7 @@ public class FillFromFileStrategy implements IFillCollection {
             String line;
             int lineCount = 0;
             int mileageInt;
+            int numberInt;
 
             while ((line = reader.readLine()) != null) {
                 lineCount++;
@@ -42,19 +41,29 @@ public class FillFromFileStrategy implements IFillCollection {
                     continue;
                 }
 
-                String number = parts[0].trim();
-                String model = parts[1].trim();
+                String model = parts[0].trim();
+                String number = parts[1].trim();
                 String mileage = parts[2].trim();
 
                 try {
+                    numberInt = Integer.parseInt(number);
                     mileageInt = Integer.parseInt(mileage);
+
+                    if (model.chars().anyMatch(Character::isDigit)) {
+                        System.out.println("Строка: " + lineCount + " , модель содержит недопустимое значение " + model);
+                    }
+
+                    if (numberInt < 0 || mileageInt < 0) {
+                        System.out.println("Строка: " + lineCount + " содержит отрицательное число");
+                        continue;
+                    }
                 }  catch (NumberFormatException e) {
                     System.out.println("Строка: " + lineCount + " 3-е поле не является числом");
                     continue;
                 }
-
-                map.put("number", number);
+                HashMap<String, Object> map = new HashMap<>();
                 map.put("model", model);
+                map.put("number", numberInt);
                 map.put("mileage", mileageInt);
 
                 list.add(map);

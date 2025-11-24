@@ -1,5 +1,6 @@
 package service.fillCollection;
 
+import base.Bus;
 import service.fillCollection.fillStrategy.IFillCollection;
 
 import java.util.HashMap;
