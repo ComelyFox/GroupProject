@@ -1,13 +1,21 @@
 package app;
 
+import base.Bus;
+import base.SortType;
+import service.MyArrayList;
+import strategy.SortingContext;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static MyArrayList<Bus> buses = new MyArrayList<>();
+
     public static void main(String[] args) {
         boolean isExit = false;
         int choice;
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("=== Приложение для сортировки автобусов ===");
 
         while (!isExit) {
@@ -85,7 +93,6 @@ public class Main {
 
         boolean isExit = false;
         int choice;
-        Scanner scanner = new Scanner(System.in);
 
         while (!isExit) {
             try {
@@ -106,7 +113,25 @@ public class Main {
     }
 
     public static void sort(){
-        // Временно
-        System.out.println("Сортируем...\n");
+        SortingContext context = new SortingContext();
+
+        System.out.println("""
+                Выберите тип сортировки:
+                1 - Быстрая сортировка
+                2 - Продвинутая сортировка
+                """);
+
+        int choice = scanner.nextInt();
+        SortType selectedType = switch (choice) {
+            case 1 -> SortType.QUICK_SORT;
+            case 2 -> SortType.TRICKY_SORT;
+            default -> throw new IllegalArgumentException("Неверный выбор");
+        };
+
+        context.setStrategy(selectedType);
+        context.executeSort(buses);
+
+        System.out.println("Результат сортировки:");
+        buses.forEach(System.out::println);
     }
 }
