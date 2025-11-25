@@ -4,5 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface IFillCollection {
-    List<HashMap<String, Object>> getFillCollection();
+    List<HashMap<String, Object>> fillCollection();
+    void clearStrategyCollection();
 }

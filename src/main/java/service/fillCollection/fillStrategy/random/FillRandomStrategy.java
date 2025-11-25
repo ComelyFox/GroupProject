@@ -1,18 +1,24 @@
 package service.fillCollection.fillStrategy.random;
 
 import service.fillCollection.fillStrategy.IFillCollection;
-import service.fillCollection.fillStrategy.random.parts.FillRandomCharPart;
-import service.fillCollection.fillStrategy.random.parts.FillRandomIntPart;
 
 import java.util.*;
 
 public class FillRandomStrategy implements IFillCollection {
-    int len;
+    private final HashMap<String, Object> mapEntityBus;
+    private final List<HashMap<String, Object>> listMapEntityBus;
+    int quantityBus;
     List<String> listModels = List.of("Volvo", "Mercedes", "Scania", "Renault", "Kamaz", "DAF", "Man",
             "Iveco", "Isuzu", "SITRAK", "Shacman", "JAC");
 
-    public FillRandomStrategy(int len){
-        this.len = len;
+    public FillRandomStrategy(){
+        this.mapEntityBus = new HashMap<>();
+        this.listMapEntityBus = new ArrayList<>();
+        this.quantityBus = 1;
+    }
+    
+    public void setQuantityBus(int quantityBus) {
+        this.quantityBus = quantityBus;
     }
 
     private String getRandomModel() {
@@ -24,20 +30,22 @@ public class FillRandomStrategy implements IFillCollection {
         return rand.nextInt(1000000);
     }
 
-    private List<HashMap<String, Object>> getRandomBus() {
-        List<HashMap<String, Object>> bus = new ArrayList<>();
-        for (int i = 0; i < this.len; i++){
-            HashMap<String, Object> entity = new HashMap<>();
-            entity.put("model", getRandomModel());
-            entity.put("number", getRandomInt());
-            entity.put("mileage", getRandomInt());
-            bus.add(entity);
+    @Override
+    public List<HashMap<String, Object>> fillCollection() {
+        for (int i = 0; i < this.quantityBus; i++){
+            mapEntityBus.put("model", getRandomModel());
+            mapEntityBus.put("number", getRandomInt());
+            mapEntityBus.put("mileage", getRandomInt());
+            listMapEntityBus.add(new HashMap<>(mapEntityBus));
         }
-        return bus;
+        return listMapEntityBus;
     }
 
     @Override
-    public List<HashMap<String, Object>> getFillCollection() {
-        return getRandomBus();
+    public void clearStrategyCollection() {
+        quantityBus = 0;
+        mapEntityBus.clear();
+        listMapEntityBus.clear();
     }
+
 }

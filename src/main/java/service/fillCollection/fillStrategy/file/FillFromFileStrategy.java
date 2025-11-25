@@ -12,18 +12,25 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FillFromFileStrategy implements IFillCollection {
-    private final List<HashMap<String, Object>> list;
-    private final String filePath;
+    private final HashMap<String, Object> mapEntityBus;
+    private final List<HashMap<String, Object>> listMapEntityBus;
+    private String filePath;
 
-    public FillFromFileStrategy(String filePath) {
-        this.filePath = filePath;
-        this.list = new ArrayList<>();
+    public FillFromFileStrategy() {
+        this.mapEntityBus = new HashMap<>();
+        this.listMapEntityBus = new ArrayList<>();
+        this.filePath = "";
     }
 
-    private List<HashMap<String, Object>> readFileToCollection() {
-        if (!Files.exists(Paths.get(filePath))) {
+    public void setPath(String path) {
+        this.filePath = path;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> fillCollection() {
+        if (!Files.exists(Paths.get(filePath)) || filePath.isBlank()) {
             System.out.println("Файл не найден");
-            return null;
+            return listMapEntityBus;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(this.filePath))) {
@@ -58,26 +65,23 @@ public class FillFromFileStrategy implements IFillCollection {
                         continue;
                     }
                 }  catch (NumberFormatException e) {
-                    System.out.println("Строка: " + lineCount + " 3-е поле не является числом");
+                    System.out.println("Строка: " + lineCount + " поле не является числом");
                     continue;
                 }
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("model", model);
-                map.put("number", numberInt);
-                map.put("mileage", mileageInt);
-
-                list.add(map);
+                mapEntityBus.clear();
+                mapEntityBus.put("model", model);
+                mapEntityBus.put("number", numberInt);
+                mapEntityBus.put("mileage", mileageInt);
+                listMapEntityBus.add(new HashMap<>(mapEntityBus));
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
-
         }
-        return list;
+        return listMapEntityBus;
     }
 
     @Override
-    public List<HashMap<String, Object>> getFillCollection() {
-        return readFileToCollection();
+    public void clearStrategyCollection() {
+        listMapEntityBus.clear();
     }
 }
