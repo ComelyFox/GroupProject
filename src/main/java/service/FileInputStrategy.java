@@ -2,6 +2,7 @@ package service;
 
 import base.Bus;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,7 +17,7 @@ public class FileInputStrategy implements DataInputStrategy {
     private final DataParser dataParser = new DataParser();
 
     public FileInputStrategy() {
-        this.filePath = "buses.txt";
+        this.filePath = "data.txt";
     }
 
     @Override
@@ -26,7 +27,12 @@ public class FileInputStrategy implements DataInputStrategy {
         List<Bus> validBuses = new MyArrayList<>();
 
         try {
-            Path path = Paths.get(filePath).toAbsolutePath();
+            URL resource = getClass().getClassLoader().getResource(filePath);
+            if (resource == null) {
+                throw new RuntimeException("Файл не найден в resources: " + filePath);
+            }
+
+            Path path = Paths.get(resource.toURI());
 
             if (!Files.exists(path)) {
                 throw new RuntimeException("Файл не найден в корне проекта: " + path);
