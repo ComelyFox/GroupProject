@@ -8,7 +8,7 @@ public class MainTest {
     @Test
     void testShowMainMenu() {
         // Проверка, что метод showMainMenu не падает
-        assertDoesNotThrow(Main::showMeinMenu);
+        assertDoesNotThrow(Main::showMainMenu);
     }
 
     @Test
