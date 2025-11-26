@@ -62,12 +62,20 @@ public class Application {
                 }
                 case 2 -> {
                     int count = ui.requestBusCount();
+                    if (count == 0){
+                        ui.showInfo("Операция отменена");
+                        return;
+                    }
                     dataContext.setStrategy(CollectionFillType.RANDOM, count);
                     buses = dataContext.executeStrategy();
                     return;
                 }
                 case 3 -> {
                     int count = ui.requestBusCount();
+                    if (count == 0){
+                        ui.showInfo("Операция отменена");
+                        return;
+                    }
                     dataContext.setStrategy(CollectionFillType.MANUAL, count);
                     buses = dataContext.executeStrategy();
                     return;
@@ -83,6 +91,11 @@ public class Application {
             System.out.println("Невозможно отсортировать. Коллекция пуста");
         } else {
             int choice = ui.showSortTypeMenu();
+
+            if (choice == 3){
+                return;
+            }
+
             SortType type = switch (choice) {
                 case 1 -> SortType.QUICK_SORT;
                 case 2 -> SortType.TRICKY_SORT;
@@ -109,6 +122,7 @@ public class Application {
                 Bus bus = new DataParser().parseBusData(model, serialNumber, mileage);
                 writer.appendBus(bus);
             }
+            case 3 -> {return;}
             default -> ui.showError("Неверный выбор!");
         }
     }

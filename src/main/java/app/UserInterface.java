@@ -45,7 +45,8 @@ public class UserInterface {
         System.out.println("""
             Выберите тип сортировки:
             1 - Быстрая сортировка
-            2 - Продвинутая сортировка""");
+            2 - Продвинутая сортировка
+            3 - Отмена""");
         return readInt("Ваш выбор: ");
     }
 
@@ -53,7 +54,8 @@ public class UserInterface {
         System.out.println("""
             Выберите тип записи:
             1 - Сохранить коллекцию
-            2 - Добавить автобус""");
+            2 - Добавить автобус
+            3 - Отмена""");
         return readInt("Ваш выбор: ");
     }
 
@@ -69,11 +71,13 @@ public class UserInterface {
     }
 
     public int requestBusCount() {
-        System.out.print("Введите количество автобусов: ");
+        System.out.print("Введите количество автобусов (0 для отмены): ");
         try {
-            return Integer.parseInt(scanner.nextLine().trim());
+            int response = Integer.parseInt(scanner.nextLine().trim());
+            if (response < 0 || response > 100) {throw new NumberFormatException();}
+            return response;
         } catch (NumberFormatException e) {
-            showError("Неверный формат числа");
+            showError("Неверный формат числа. Допустимый диапазон: 0-100");
             return requestBusCount();
         }
     }
