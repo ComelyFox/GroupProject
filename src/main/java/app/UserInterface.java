@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     private final Scanner scanner;
+    private boolean isGreeting = false;
 
     public UserInterface() {
         this.scanner = new Scanner(System.in);
@@ -15,9 +16,11 @@ public class UserInterface {
 
     // Все методы меню
     public int showMainMenu() {
+        if (!isGreeting) {
+            System.out.println("=== Добро пожаловать в приложение для сортировки автобусов ===");
+            isGreeting = true;
+        }
         System.out.println("""
-            
-            === Приложение для сортировки автобусов ===
             Выберите действие:
             1 - Показать массив данных
             2 - Заполнить массив данных
