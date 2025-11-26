@@ -42,8 +42,12 @@ public class Application {
     }
 
     private void showData() {
-        ui.showInfo("Текущие данные:");
-        buses.forEach(bus -> ui.showInfo(bus.toString()));
+        if (buses.isEmpty()){
+            System.out.println("Коллекция пуста");
+        } else {
+            ui.showInfo("Текущие данные:");
+            buses.forEach(bus -> ui.showInfo(bus.toString()));
+        }
     }
 
     private void fillDataList() {
@@ -75,16 +79,20 @@ public class Application {
     }
 
     private void sort() {
-        int choice = ui.showSortTypeMenu();
-        SortType type = switch (choice) {
-            case 1 -> SortType.QUICK_SORT;
-            case 2 -> SortType.TRICKY_SORT;
-            default -> throw new IllegalArgumentException("Неверный выбор");
-        };
+        if (buses.isEmpty()){
+            System.out.println("Невозможно отсортировать. Коллекция пуста");
+        } else {
+            int choice = ui.showSortTypeMenu();
+            SortType type = switch (choice) {
+                case 1 -> SortType.QUICK_SORT;
+                case 2 -> SortType.TRICKY_SORT;
+                default -> throw new IllegalArgumentException("Неверный выбор");
+            };
 
-        sortingContext.setStrategy(type);
-        sortingContext.executeSort(buses);
-        ui.showSuccess("Данные отсортированы");
+            sortingContext.setStrategy(type);
+            sortingContext.executeSort(buses);
+            ui.showSuccess("Данные отсортированы");
+        }
     }
 
     private void addToFile() {
