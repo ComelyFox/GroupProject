@@ -84,17 +84,17 @@ public class UserInterface {
     }
 
     public String requestModel() {
-        System.out.print("Введите модель автобуса: ");
+        System.out.print("Введите модель автобуса (0 для отмены): ");
         return scanner.nextLine().trim();
     }
 
     public String requestSerialNumber() {
-        System.out.print("Введите серийный номер: ");
+        System.out.print("Введите серийный номер (0 для отмены): ");
         return scanner.nextLine().trim();
     }
 
     public String requestMileage() {
-        System.out.print("Введите пробег: ");
+        System.out.print("Введите пробег (0 для отмены): ");
         return scanner.nextLine().trim();
     }
 

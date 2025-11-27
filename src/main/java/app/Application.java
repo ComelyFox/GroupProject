@@ -123,8 +123,22 @@ public class Application {
             }
             case 3 -> {
                 String model = ui.requestModel();
-                String mileage = ui.requestMileage();
+                if ("0".equals(model)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
+
                 String serialNumber = ui.requestSerialNumber();
+                if ("0".equals(serialNumber)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
+
+                String mileage = ui.requestMileage();
+                if ("0".equals(mileage)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
 
                 Bus bus = new DataParser().parseBusData(model, serialNumber, mileage);
                 writer.appendBus(bus);

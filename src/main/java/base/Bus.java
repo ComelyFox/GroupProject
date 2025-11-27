@@ -28,7 +28,7 @@ public class Bus {
     @Override
     public String toString() {
         return "Автобус " +
-                model + '\'' +
+                model + ' ' +
                 ", серийный номер = " + serialNumber +
                 ", пробег = " + mileage
                 ;

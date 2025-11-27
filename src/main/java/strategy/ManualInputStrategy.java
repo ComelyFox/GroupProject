@@ -5,6 +5,7 @@ import base.Bus;
 import service.DataParser;
 import service.MyArrayList;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,8 +26,22 @@ public class ManualInputStrategy implements DataInputStrategy {
         for (int i = 0; i < size; i++) {
             // Интерактивный диалог с пользователем
             String model = userInterface.requestModel();
+            if ("0".equals(model)) {
+                userInterface.showInfo("Операция отменена");
+                return Collections.emptyList();
+            }
+
             String serialNumber = userInterface.requestSerialNumber();
+            if ("0".equals(serialNumber)) {
+                userInterface.showInfo("Операция отменена");
+                return Collections.emptyList();
+            }
+
             String mileage = userInterface.requestMileage();
+            if ("0".equals(mileage)) {
+                userInterface.showInfo("Операция отменена");
+                return Collections.emptyList();
+            }
 
             Bus bus = dataParser.parseBusData(model, serialNumber, mileage);
             if (bus != null) {
