@@ -5,8 +5,6 @@ import base.Bus;
 import service.DataParser;
 import service.MyArrayList;
 
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Класс для ручного ввода. Взаимодействует с UserInterface

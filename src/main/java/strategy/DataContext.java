@@ -4,7 +4,6 @@ import base.Bus;
 import base.CollectionFillType;
 import service.MyArrayList;
 
-import java.util.List;
 
 public class DataContext {
     private DataInputStrategy strategy;
