@@ -67,7 +67,7 @@ class BusFileWriterTest {
                 .setMileage(40000)
                 .build();
 
-        busFileWriter.appendBuses(List.of(bus1, bus2));
+        busFileWriter.appendBuses(List.of(bus1, bus2), true);
 
         List<String> lines = Files.readAllLines(tempFile);
         assertEquals(2, lines.size());

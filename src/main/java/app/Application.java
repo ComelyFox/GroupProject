@@ -113,16 +113,24 @@ public class Application {
         BusFileWriter writer = new BusFileWriter("buses.txt");
 
         switch (choice) {
-            case 1 -> writer.appendBuses(buses);
+            case 1 -> {
+                writer.appendBuses(buses, true);
+                ui.showSuccess("Коллекция сохранена в режиме добавления данных");
+            }
             case 2 -> {
+                writer.appendBuses(buses, false);
+                ui.showSuccess("Коллекция перезаписана");
+            }
+            case 3 -> {
                 String model = ui.requestModel();
                 String mileage = ui.requestMileage();
                 String serialNumber = ui.requestSerialNumber();
 
                 Bus bus = new DataParser().parseBusData(model, serialNumber, mileage);
                 writer.appendBus(bus);
+                ui.showSuccess("Автобус добавлен в файл");
             }
-            case 3 -> {return;}
+            case 4 -> {return;}
             default -> ui.showError("Неверный выбор!");
         }
     }

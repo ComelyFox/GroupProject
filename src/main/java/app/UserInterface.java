@@ -53,9 +53,10 @@ public class UserInterface {
     public int showSaveMenu() {
         System.out.println("""
             Выберите тип записи:
-            1 - Сохранить коллекцию
-            2 - Добавить автобус
-            3 - Отмена""");
+            1 - Сохранить коллекцию (режим добавления данных)
+            2 - Перезаписать коллекцию (старые данные удаляются)
+            3 - Добавить автобус
+            4 - Отмена""");
         return readInt("Ваш выбор: ");
     }
 
@@ -96,6 +97,7 @@ public class UserInterface {
         System.out.print("Введите пробег: ");
         return scanner.nextLine().trim();
     }
+
 
     public void showError(String message) {
         System.out.println("Ошибка: " + message);
