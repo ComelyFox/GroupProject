@@ -9,13 +9,12 @@ import service.DataParser;
 import service.MyArrayList;
 import strategy.SortingContext;
 
-import java.util.List;
 
 public class Application {
     private final UserInterface ui;
     private final DataContext dataContext;
     private final SortingContext sortingContext;
-    private List<Bus> buses;
+    private MyArrayList<Bus> buses;
 
     public Application() {
         this.ui = new UserInterface();
@@ -35,7 +34,8 @@ public class Application {
                 case 2 -> fillDataList();
                 case 3 -> sort();
                 case 4 -> addToFile();
-                case 5 -> isExit = true;
+                case 5 -> countOccurrences();
+                case 6 -> isExit = true;
                 default -> ui.showError("Неверный выбор!");
             }
         }
@@ -152,5 +152,33 @@ public class Application {
             case 4 -> {return;}
             default -> ui.showError("Неверный выбор!");
         }
+    }
+
+    private void countOccurrences() {
+        int count = ui.requestThreadCount();
+        if (count == 0){
+            ui.showInfo("Операция отменена");
+            return;
+        }
+        String model = ui.requestModel();
+        if ("0".equals(model)) {
+            ui.showInfo("Операция отменена");
+            return;
+        }
+
+        String serialNumber = ui.requestSerialNumber();
+        if ("0".equals(serialNumber)) {
+            ui.showInfo("Операция отменена");
+            return;
+        }
+
+        String mileage = ui.requestMileage();
+        if ("0".equals(mileage)) {
+            ui.showInfo("Операция отменена");
+            return;
+        }
+
+        Bus bus = new DataParser().parseBusData(model, serialNumber, mileage);
+        ui.showInfo("Количество найденных элементов: " + buses.countOccurrences(bus, count));
     }
 }

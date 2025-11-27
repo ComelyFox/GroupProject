@@ -21,26 +21,26 @@ public class ManualInputStrategy implements DataInputStrategy {
     }
 
     @Override
-    public List<Bus> getBuses() {
-        List<Bus> buses = new MyArrayList<>();
+    public MyArrayList<Bus> getBuses() {
+        MyArrayList<Bus> buses = new MyArrayList<>();
         for (int i = 0; i < size; i++) {
             // Интерактивный диалог с пользователем
             String model = userInterface.requestModel();
             if ("0".equals(model)) {
                 userInterface.showInfo("Операция отменена");
-                return Collections.emptyList();
+                return new MyArrayList<>();
             }
 
             String serialNumber = userInterface.requestSerialNumber();
             if ("0".equals(serialNumber)) {
                 userInterface.showInfo("Операция отменена");
-                return Collections.emptyList();
+                return new MyArrayList<>();
             }
 
             String mileage = userInterface.requestMileage();
             if ("0".equals(mileage)) {
                 userInterface.showInfo("Операция отменена");
-                return Collections.emptyList();
+                return new MyArrayList<>();
             }
 
             Bus bus = dataParser.parseBusData(model, serialNumber, mileage);

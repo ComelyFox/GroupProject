@@ -22,10 +22,10 @@ public class FileInputStrategy implements DataInputStrategy {
     }
 
     @Override
-    public List<Bus> getBuses() {
+    public MyArrayList<Bus> getBuses() {
         int addedBusCount = 0;
         int skippedBusCount = 0;
-        List<Bus> validBuses = new MyArrayList<>();
+        MyArrayList<Bus> validBuses = new MyArrayList<>();
 
         try {
             Path path = Paths.get(filePath).toAbsolutePath();

@@ -2,6 +2,7 @@ package strategy;
 
 import base.Bus;
 import base.CollectionFillType;
+import service.MyArrayList;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DataContext {
         }
     }
 
-    public List<Bus> executeStrategy() {
+    public MyArrayList<Bus> executeStrategy() {
         if (strategy == null) {
             throw new IllegalStateException("Стратегия не выбрана!");
         }

@@ -16,8 +16,8 @@ public class RandomInputStrategy implements DataInputStrategy {
     }
 
     @Override
-    public List<Bus> getBuses() {
-        List<Bus> buses = new MyArrayList<>();
+    public MyArrayList<Bus> getBuses() {
+        MyArrayList<Bus> buses = new MyArrayList<>();
 
         for (int i = 0; i < count; i++) {
             BusModel randomModel = BusModel.randomModel();

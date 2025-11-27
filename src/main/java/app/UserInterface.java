@@ -26,7 +26,8 @@ public class UserInterface {
             2 - Заполнить массив данных
             3 - Отсортировать данные
             4 - Сохранить в файл
-            5 - Выйти из программы
+            5 - Поиск в коллекции (многопоточный метод)
+            6 - Выйти из программы
             """);
         return readInt("Ваш выбор: ");
     }
@@ -83,6 +84,18 @@ public class UserInterface {
         }
     }
 
+    public int requestThreadCount() {
+        System.out.print("Введите количество потоков (0 для отмены): ");
+        try {
+            int response = Integer.parseInt(scanner.nextLine().trim());
+            if (response < 0 || response > 4) {throw new NumberFormatException();}
+            return response;
+        } catch (NumberFormatException e) {
+            showError("Неверный формат числа. Допустимый диапазон: 0-4");
+            return requestBusCount();
+        }
+    }
+
     public String requestModel() {
         System.out.print("Введите модель автобуса (0 для отмены): ");
         return scanner.nextLine().trim();
@@ -97,7 +110,6 @@ public class UserInterface {
         System.out.print("Введите пробег (0 для отмены): ");
         return scanner.nextLine().trim();
     }
-
 
     public void showError(String message) {
         System.out.println("Ошибка: " + message);

@@ -1,3 +1,4 @@
+import base.Bus;
 import org.junit.jupiter.api.Test;
 import service.MyArrayList;
 
@@ -76,5 +77,38 @@ public class MyArrayListTest {
         assertEquals("A", iter.next());
         iter.remove(); // удаляем "A"
         assertEquals(1, list.size());
+    }
+
+    @Test
+    void testConcurrentMethod(){
+        MyArrayList<Bus> list = new MyArrayList<>();
+        var bus1 = new Bus.BusBuilder()
+                .setModel("Сарай")
+                .setSerialNumber(777666)
+                .setMileage(1000000)
+                .build();
+        var bus2 = new Bus.BusBuilder()
+                .setModel("Сарай NEO")
+                .setSerialNumber(777666)
+                .setMileage(1000000)
+                .build();
+        for (int i = 0; i < 5; i++) {
+            list.add(bus1);
+        }
+        for (int i = 0; i < 2; i++) {
+            list.add(bus2);
+        }
+
+        var busResult = new Bus.BusBuilder()
+                .setModel("Сарай")
+                .setSerialNumber(777666)
+                .setMileage(1000000)
+                .build();
+
+        int res1 = list.countOccurrences(busResult, 3);
+        int res2 = list.countParallelOccurrences(busResult);
+
+        assertEquals(5, res1);
+        assertEquals(5, res2);
     }
 }
