@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     private final Scanner scanner;
+    private boolean isGreeting = false;
 
     public UserInterface() {
         this.scanner = new Scanner(System.in);
@@ -15,9 +16,11 @@ public class UserInterface {
 
     // Все методы меню
     public int showMainMenu() {
+        if (!isGreeting) {
+            System.out.println("=== Добро пожаловать в приложение для сортировки автобусов ===");
+            isGreeting = true;
+        }
         System.out.println("""
-            
-            === Приложение для сортировки автобусов ===
             Выберите действие:
             1 - Показать массив данных
             2 - Заполнить массив данных
@@ -42,15 +45,18 @@ public class UserInterface {
         System.out.println("""
             Выберите тип сортировки:
             1 - Быстрая сортировка
-            2 - Продвинутая сортировка""");
+            2 - Продвинутая сортировка
+            3 - Отмена""");
         return readInt("Ваш выбор: ");
     }
 
     public int showSaveMenu() {
         System.out.println("""
             Выберите тип записи:
-            1 - Сохранить коллекцию
-            2 - Добавить автобус""");
+            1 - Сохранить коллекцию (режим добавления данных)
+            2 - Перезаписать коллекцию (старые данные удаляются)
+            3 - Добавить автобус
+            4 - Отмена""");
         return readInt("Ваш выбор: ");
     }
 
@@ -66,29 +72,32 @@ public class UserInterface {
     }
 
     public int requestBusCount() {
-        System.out.print("Введите количество автобусов: ");
+        System.out.print("Введите количество автобусов (0 для отмены): ");
         try {
-            return Integer.parseInt(scanner.nextLine().trim());
+            int response = Integer.parseInt(scanner.nextLine().trim());
+            if (response < 0 || response > 100) {throw new NumberFormatException();}
+            return response;
         } catch (NumberFormatException e) {
-            showError("Неверный формат числа");
+            showError("Неверный формат числа. Допустимый диапазон: 0-100");
             return requestBusCount();
         }
     }
 
     public String requestModel() {
-        System.out.print("Введите модель автобуса: ");
+        System.out.print("Введите модель автобуса (0 для отмены): ");
         return scanner.nextLine().trim();
     }
 
     public String requestSerialNumber() {
-        System.out.print("Введите серийный номер: ");
+        System.out.print("Введите серийный номер (0 для отмены): ");
         return scanner.nextLine().trim();
     }
 
     public String requestMileage() {
-        System.out.print("Введите пробег: ");
+        System.out.print("Введите пробег (0 для отмены): ");
         return scanner.nextLine().trim();
     }
+
 
     public void showError(String message) {
         System.out.println("Ошибка: " + message);

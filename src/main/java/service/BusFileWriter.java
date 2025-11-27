@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class BusFileWriter {
     private final UserInterface userInterface = new UserInterface();
-    private final DataParser dataParser = new DataParser();
     private final String filePath;
 
     public BusFileWriter(String filePath) {
@@ -23,13 +22,16 @@ public class BusFileWriter {
     }
 
     /**
-     * Добавляет коллекцию автобусов в конец файла
+     * Добавляет коллекцию автобусов в конец файла или перезаписывает с удалением старых данных
+     * в зависимости от переданного аргумента append
      */
-    public void appendBuses(List<Bus> buses) {
+    public void appendBuses(List<Bus> buses, boolean append) {
+        StandardOpenOption[] options = append ?
+                new StandardOpenOption[] { StandardOpenOption.APPEND, StandardOpenOption.CREATE,} :
+                new StandardOpenOption[] { StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE};
+
         try (BufferedWriter writer = Files.newBufferedWriter(
-                Path.of(filePath),
-                StandardOpenOption.APPEND,
-                StandardOpenOption.CREATE
+                Path.of(filePath), options
         )) {
             for (Bus bus : buses) {
                 String busData = bus.getModel() + "," +

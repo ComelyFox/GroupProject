@@ -4,7 +4,7 @@ import base.Bus;
 import base.CollectionFillType;
 import base.SortType;
 import service.BusFileWriter;
-import service.DataContext;
+import strategy.DataContext;
 import service.DataParser;
 import service.MyArrayList;
 import strategy.SortingContext;
@@ -62,12 +62,20 @@ public class Application {
                 }
                 case 2 -> {
                     int count = ui.requestBusCount();
+                    if (count == 0){
+                        ui.showInfo("Операция отменена");
+                        return;
+                    }
                     dataContext.setStrategy(CollectionFillType.RANDOM, count);
                     buses = dataContext.executeStrategy();
                     return;
                 }
                 case 3 -> {
                     int count = ui.requestBusCount();
+                    if (count == 0){
+                        ui.showInfo("Операция отменена");
+                        return;
+                    }
                     dataContext.setStrategy(CollectionFillType.MANUAL, count);
                     buses = dataContext.executeStrategy();
                     return;
@@ -83,6 +91,11 @@ public class Application {
             System.out.println("Невозможно отсортировать. Коллекция пуста");
         } else {
             int choice = ui.showSortTypeMenu();
+
+            if (choice == 3){
+                return;
+            }
+
             SortType type = switch (choice) {
                 case 1 -> SortType.QUICK_SORT;
                 case 2 -> SortType.TRICKY_SORT;
@@ -99,16 +112,44 @@ public class Application {
         int choice = ui.showSaveMenu();
         BusFileWriter writer = new BusFileWriter("buses.txt");
 
+        if (buses.isEmpty()){
+            ui.showInfo("Список пуст. Нечего сохранять");
+            return;
+        }
+
         switch (choice) {
-            case 1 -> writer.appendBuses(buses);
+            case 1 -> {
+                writer.appendBuses(buses, true);
+                ui.showSuccess("Коллекция сохранена в режиме добавления данных");
+            }
             case 2 -> {
+                writer.appendBuses(buses, false);
+                ui.showSuccess("Коллекция перезаписана");
+            }
+            case 3 -> {
                 String model = ui.requestModel();
-                String mileage = ui.requestMileage();
+                if ("0".equals(model)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
+
                 String serialNumber = ui.requestSerialNumber();
+                if ("0".equals(serialNumber)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
+
+                String mileage = ui.requestMileage();
+                if ("0".equals(mileage)) {
+                    ui.showInfo("Операция отменена");
+                    return;
+                }
 
                 Bus bus = new DataParser().parseBusData(model, serialNumber, mileage);
                 writer.appendBus(bus);
+                ui.showSuccess("Автобус добавлен в файл");
             }
+            case 4 -> {return;}
             default -> ui.showError("Неверный выбор!");
         }
     }
