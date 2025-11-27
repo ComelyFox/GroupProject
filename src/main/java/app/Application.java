@@ -112,6 +112,11 @@ public class Application {
         int choice = ui.showSaveMenu();
         BusFileWriter writer = new BusFileWriter("buses.txt");
 
+        if (buses.isEmpty()){
+            ui.showInfo("Список пуст. Нечего сохранять");
+            return;
+        }
+
         switch (choice) {
             case 1 -> {
                 writer.appendBuses(buses, true);

@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class BusFileWriter {
     private final UserInterface userInterface = new UserInterface();
-    private final DataParser dataParser = new DataParser();
     private final String filePath;
 
     public BusFileWriter(String filePath) {
